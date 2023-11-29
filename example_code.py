@@ -7,13 +7,22 @@ import mysql.connector
 mydb = mysql.connector.connect(
   host="localhost",
   user="username",
-  password="password"
+  password="password",
+  database="media"
 )
 
 # Lets store the data in a cursor
 cursor = mydb.cursor()
+createTable(cursor)
 
-# Now we can create a database for movies
-cursor.execute("CREATE DATABASE movies")
+def createTable(cursor):
+  # Now we can create a table for movies
+  cursor.execute("CREATE TABLE movies (name VARCHAR(255), genre VARCHAR(255))")
 
-# todo(alexsammy): add queries for movies database
+def getMovies(genre):
+  # Gets all movies given the genre provided
+  sql = "SELECT name FROM movies WHERE genre = %s"
+  cursor.execute(sql, genre)
+  result = cursor.fetchall()
+  return result
+
